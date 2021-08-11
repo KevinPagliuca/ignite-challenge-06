@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { SideBar } from './components/SideBar';
 import { Content } from './components/Content';
@@ -9,6 +9,8 @@ import './styles/global.scss';
 
 import './styles/sidebar.scss';
 import './styles/content.scss';
+import { useMemo } from 'react';
+import { memo } from 'react';
 
 interface GenreResponseProps {
   id: number;
@@ -27,7 +29,7 @@ interface MovieProps {
   Runtime: string;
 }
 
-export function App() {
+const AppComponent = () => {
   const [selectedGenreId, setSelectedGenreId] = useState(1);
 
   const [genres, setGenres] = useState<GenreResponseProps[]>([]);
@@ -51,9 +53,9 @@ export function App() {
     })
   }, [selectedGenreId]);
 
-  function handleClickButton(id: number) {
+  const handleClickButton = useCallback((id: number) => {
     setSelectedGenreId(id);
-  }
+  }, [selectedGenreId]);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -70,3 +72,5 @@ export function App() {
     </div>
   )
 }
+
+export const App = memo(AppComponent);
